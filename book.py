@@ -6,6 +6,23 @@ class Book:
         self.isbn = isbn
         self.borrowed = False
 
+    def __eq__(self, other):
+        if not isinstance(other, Book):
+            return NotImplemented
+        return (
+            self.title,
+            self.author,
+            self.year,
+            self.isbn,
+            self.borrowed,
+        ) == (
+            other.title,
+            other.author,
+            other.year,
+            other.isbn,
+            other.borrowed,
+        )
+
     def borrow(self):
         if self.borrowed:
             raise ValueError("The book is already borrowed")
@@ -15,5 +32,3 @@ class Book:
         if not self.borrowed:
             raise ValueError("The book is not currently borrowed")
         self.borrowed = False
-
-

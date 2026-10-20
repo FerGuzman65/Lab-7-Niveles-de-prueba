@@ -1,8 +1,11 @@
 from book import Book
 from user import User
+
 settings = {
-    "loans_enabled": True
+    "loans_enabled": True,
 }
+
+
 class Library:
     def __init__(self):
         self.books = []
@@ -13,6 +16,12 @@ class Library:
 
     def add_user(self, user):
         self.users.append(user)
+
+    def get_books(self):
+        return self.books
+
+    def get_users(self):
+        return self.users
 
     def borrow_book(self, user_id, isbn):
         if not settings["loans_enabled"]:
@@ -34,7 +43,6 @@ class Library:
     def _find_user(self, user_id):
         for u in self.users:
             if u.user_id == user_id:
-                print("User not found")
                 return u
         raise ValueError("User not found")
 
