@@ -39,15 +39,15 @@ def lib_init():
     lib.add_user(tenoch)
     return lib
 
-@pytest.mark.system
+@pytest.mark.integration
 def test_library_init(lib_init):
     lib = lib_init
     lib.borrow_book("U001", "ISBN001")
     assert lib.books[0].borrowed == True
 
-@pytest.mark.wip
+@pytest.mark.integration
 def test_library_init_ID_not_registered(lib_init):
     lib = lib_init
     with pytest.raises(ValueError, match="User not found"):
-        lib.borrow_book("U001", "ISBN001")
+        lib.borrow_book("U999", "ISBN001")
     assert lib.books[0].borrowed == False
