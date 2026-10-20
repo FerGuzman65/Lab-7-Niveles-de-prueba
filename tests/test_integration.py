@@ -3,7 +3,10 @@ import pytest
 
 from book import Book
 from user import User
+import library
 from library import Library
+
+pytestmark = pytest.mark.integration
 
 
 @pytest.fixture
@@ -38,3 +41,12 @@ def test_it03_return_then_borrow_by_other_user(lib):
     assert lib._find_book("ISBN001").borrowed is True
     assert lib._find_user("U001").get_history() == ["Borrowed: 1984", "Returned: 1984"]
     assert lib._find_user("U002").get_history() == ["Borrowed: 1984"]
+
+
+# IT-04: con los préstamos deshabilitados se rechaza el préstamo y el libro no cambia (RNF2)
+def test_it04_loans_disabled_rejects_borrow(lib, monkeypatch):
+    monkeypatch.setitem(library.settings, "loans_enabled", False)
+    with pytest.raises(ValueError, match="Loans are disabled"):
+        lib.borrow_book("U001", "ISBN001")
+    assert lib._find_book("ISBN001").borrowed is False
+    assert lib._find_user("U001").get_history() == []

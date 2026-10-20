@@ -5,6 +5,8 @@ from book import Book
 from user import User
 from library import Library
 
+pytestmark = pytest.mark.unit
+
 
 def make_book():
     return Book("1984", "George Orwell", 1949, "ISBN001")
@@ -62,3 +64,14 @@ def test_ut07_library_find_existing_user_no_error_message(capsys):
     lib.add_user(user)
     assert lib._find_user("U001") is user
     assert "User not found" not in capsys.readouterr().out
+
+
+# UT-08: get_available_books() regresa solo los libros que no están prestados (RF6)
+def test_ut08_library_get_available_books():
+    lib = Library()
+    b1 = make_book()
+    b2 = Book("Moby Dick", "Herman Melville", 1851, "ISBN004")
+    lib.add_book(b1)
+    lib.add_book(b2)
+    b1.borrow()
+    assert lib.get_available_books() == [b2]

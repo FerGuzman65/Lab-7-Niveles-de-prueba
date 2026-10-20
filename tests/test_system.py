@@ -1,7 +1,10 @@
 """Actividad 3: Pruebas de sistema (caminos completos por el menú de consola)."""
+import pytest
 import builtins
 
 import main
+
+pytestmark = pytest.mark.system
 
 
 def run_with_inputs(monkeypatch, capsys, inputs):
@@ -32,3 +35,11 @@ def test_st03_invalid_inputs_are_handled(monkeypatch, capsys):
     assert "Invalid option" in out
     assert "Error: Book not found" in out
     assert "Error: User not found" in out
+
+
+# ST-04: después de prestar un libro, la opción 4 lo quita del listado de disponibles (RF6)
+def test_st04_available_books_listing(monkeypatch, capsys):
+    out = run_with_inputs(monkeypatch, capsys, ["1", "ISBN003", "U003", "4", "0"])
+    listing = out.split("Available books:")[1]
+    assert "ISBN001 - 1984" in listing
+    assert "ISBN003" not in listing
