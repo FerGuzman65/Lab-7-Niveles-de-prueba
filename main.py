@@ -21,13 +21,14 @@ def run():
         print("1. Borrow a book")
         print("2. Return a book")
         print("3. View user history")
+        print("4. View available books")
         print("0. Exit")
 
         option = input("Choose an option: ")
 
         if option == "0":
             break
-        elif option == "2":
+        elif option == "1":
             isbn = input("Enter book ISBN: ")
             user_id = input("Enter user ID: ")
             try:
@@ -35,7 +36,7 @@ def run():
                 print("Book successfully borrowed")
             except ValueError as e:
                 print("Error:", e)
-        elif option == "1":
+        elif option == "2":
             isbn = input("Enter book ISBN: ")
             user_id = input("Enter user ID: ")
             try:
@@ -50,6 +51,10 @@ def run():
                 print("User history:", user.get_history())
             except ValueError as e:
                 print("Error:", e)
+        elif option == "4":
+            print("Available books:")
+            for b in lib.get_available_books():
+                print(f"  {b.isbn} - {b.title} ({b.author})")
         else:
             print("Invalid option")
 

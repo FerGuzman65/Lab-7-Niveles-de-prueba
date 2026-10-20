@@ -23,10 +23,12 @@ class Library:
     def get_users(self):
         return self.users
 
+    def get_available_books(self):
+        return [b for b in self.books if not b.borrowed]
+
     def borrow_book(self, user_id, isbn):
         if not settings["loans_enabled"]:
-            print("Loans are disabled")
-            return
+            raise ValueError("Loans are disabled")
         user = self._find_user(user_id)
         book = self._find_book(isbn)
 
