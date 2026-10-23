@@ -36,12 +36,21 @@ Primero se corrieron 13 casos sobre el código original (6 pasan, 7 fallan). Des
 
 Resultado final: 21 pruebas, todas pasan. Por nivel: `pytest -m unit`, `pytest -m integration`, `pytest -m system`.
 
-## Errores encontrados y corrección
+## Pruebas adicionales (Preparación Examen Práctico P2)
 
-1. `main.py`: las opciones 1 (Borrow) y 2 (Return) del menú estaban invertidas. Se corrigió.
-2. `user.py`: el historial guardaba `Borrwed` y `Reurned`. Corregido en clase.
-3. `library.py`: `_find_user()` imprimía `User not found` cuando sí encontraba al usuario. Corregido en clase.
-4. RF6 no estaba implementado. Se agregó `Library.get_available_books()` y la opción 4 del menú.
-5. `library.py`: con `loans_enabled = False`, `borrow_book()` regresaba sin error y el menú decía `Book successfully borrowed`. Ahora lanza `ValueError("Loans are disabled")`.
+Se incorporaron 5 pruebas adicionales (`tests/test_examen.py`) enfocadas en los temas clave del examen práctico que no se habían cubierto en los niveles originales del laboratorio:
+
+1. **`@pytest.mark.parametrize`**: Evalúa en una sola función múltiples combinaciones de entradas no válidas (usuario inexistente, libro inexistente y parámetros vacíos) con `ids` descriptivos y validación de `match`.
+2. **`capsys`**: Captura la salida enviada a consola (`stdout`) mediante `print()` para comprobar mensajes de éxito y error en pantalla (`safe_borrow`).
+3. **`monkeypatch.delattr`**: Elimina temporalmente atributos opcionales (`year` en `Book`) para comprobar que funciones utilitarias (`describe()`) sean tolerantes a atributos faltantes sin arrojar `AttributeError`.
+4. **`pytest.raises` con inspección de `exc_info.value`**: Demuestra la inspección detallada del objeto de excepción capturado (`exc_info.type` y `str(exc_info.value)`) más allá del uso simple de `match`.
+5. **Manejo defensivo con `try-except`**: Valida que un método seguro (`safe_borrow`) capture la excepción internamente, imprima el mensaje correspondiente y retorne un booleano (`False` en error, `True` en éxito) sin que pytest registre una excepción no controlada.
+
+Para correr únicamente estas pruebas:
+```bash
+pytest -m examen -v
+```
+
+Total general del proyecto: **28 casos ejecutados y aprobados**.
 
 Reporte: [Lab 7 - Niveles de prueba - Fer Guzman.pdf](Lab%207%20-%20Niveles%20de%20prueba%20-%20Fer%20Guzman.pdf)

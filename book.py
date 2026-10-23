@@ -32,3 +32,10 @@ class Book:
         if not self.borrowed:
             raise ValueError("The book is not currently borrowed")
         self.borrowed = False
+
+
+def describe(book):
+    """Ficha informativa del libro; si el objeto no tiene año, no truena."""
+    if hasattr(book, "year"):
+        return f"{book.title} ({book.year})"
+    return book.title

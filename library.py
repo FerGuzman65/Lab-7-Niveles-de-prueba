@@ -42,6 +42,16 @@ class Library:
         book.return_book()
         user.register_return(book)
 
+    def safe_borrow(self, user_id, isbn):
+        """Versión para el menú: atrapa el error con try-except y lo muestra en pantalla."""
+        try:
+            self.borrow_book(user_id, isbn)
+        except ValueError as e:
+            print("Error:", e)
+            return False
+        print("Book successfully borrowed")
+        return True
+
     def _find_user(self, user_id):
         for u in self.users:
             if u.user_id == user_id:
